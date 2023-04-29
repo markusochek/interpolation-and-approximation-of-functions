@@ -33,7 +33,7 @@ names = ["calculate interpolation polynomial",
          "spline",
          "best quadratic approximation"];
 
-let functions = [(div) => showLx(div, calculateInterpolationPolynomial(inputs)),
+let functions = [(div) => showCalculateInterpolationPolynomial(div, calculateInterpolationPolynomial(inputs)),
                  (div) => showSpline(div, spline(inputs)),
                 (div) => showBestQuadraticApproximation(div, bestQuadraticApproximation(inputs))];
 
@@ -49,10 +49,14 @@ for (let i = 0; i < functions.length; i++) {
 
 
 
-function showLx(div, Lx) {
+function showCalculateInterpolationPolynomial(div, Lx) {
+    Lx.reverse()
     let str = "L(x) = " + Lx[0] + "\n";
     for (let i = 1; i < Lx.length; i++) {
-        str += "+ x^" + i + " * " + Lx[i] + "\n";
+        if (Lx[i] > 0) {
+            str += "+"
+        }
+        str += Lx[i]  + " * " + "x^" + i + "\n";
     }
     getTextarea(div, str);
 
@@ -88,7 +92,7 @@ function showSpline(div, elements) {
         if (bAll[i]) {
             str += ` + ${bAll[i]} * (x-${X[i]})`;
         }
-        str += ` при x принадлежащем [${X[i]}, ${X[i+1]}]` + "\n";
+        str += ` + ${Y[i]}, при x принадлежащем [${X[i]}, ${X[i+1]}]` + "\n";
     }
     getTextarea(div, str);
 }
@@ -106,6 +110,12 @@ function showBestQuadraticApproximation(div, A) {
 
 
 function getTextarea(div, str) {
+    for (let node of div.childNodes) {
+        if(node.nodeName === "TEXTAREA") {
+            node.remove();
+        }
+    }
+
     let textarea = document.createElement("textarea");
     textarea.textContent = str;
     textarea.cols = 30;

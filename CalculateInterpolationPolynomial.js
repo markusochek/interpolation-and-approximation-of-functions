@@ -30,7 +30,7 @@ function l(X, x) {
         let degreeOfPolynomial = 0
         for (let j = 0; j < binaryNumber.length; j++) {
             if (binaryNumber[j] === "0") continue;
-            sum *= X[j]
+            sum *= -X[j]
             ++degreeOfPolynomial
         }
         sum /= denominator
