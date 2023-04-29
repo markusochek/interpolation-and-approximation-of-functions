@@ -4,13 +4,13 @@ import {bestQuadraticApproximation} from "./BestQuadraticApproximation.js";
 import {determineValueOfFunctionAtAnArbitraryPoint} from "./DetermineValueOfFunctionAtAnArbitraryPoint.js";
 
 let names = ["введите все X ",
-             "введите все Y "]
+    "введите все Y "]
 
 let N = 25;
 let k = 5;
 let m = 8
 let values = [`0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0`,
-              `${0.2 * N} ${0.3 * m} ${0.5 * k} ${0.6 * N} ${0.7 * m} ${k} ${0.8 * N} ${1.2 * k} ${1.3 * m} ${N}`]
+    `${0.2 * N} ${0.3 * m} ${0.5 * k} ${0.6 * N} ${0.7 * m} ${k} ${0.8 * N} ${1.2 * k} ${1.3 * m} ${N}`]
 
 let inputs = []
 
@@ -30,12 +30,12 @@ for(let i = 0; i < 2; i++) {
 }
 
 names = ["calculate interpolation polynomial",
-         "spline",
-         "best quadratic approximation"];
+    "spline",
+    "best quadratic approximation"];
 
 let functions = [(div) => showCalculateInterpolationPolynomial(div, calculateInterpolationPolynomial(inputs)),
-                 (div) => showSpline(div, spline(inputs)),
-                (div) => showBestQuadraticApproximation(div, bestQuadraticApproximation(inputs))];
+    (div) => showSpline(div, spline(inputs)),
+    (div) => showBestQuadraticApproximation(div, bestQuadraticApproximation(inputs))];
 
 for (let i = 0; i < functions.length; i++) {
     let div = document.createElement("div")
@@ -58,7 +58,16 @@ function showCalculateInterpolationPolynomial(div, Lx) {
         }
         str += Lx[i]  + " * " + "x^" + i + "\n";
     }
-    getTextarea(div, str);
+
+    getTextarea(div, str)
+
+    for (let node of div.childNodes) {
+        if(node.nodeName === "DIV") {
+            node.remove();
+        }
+    }
+
+    let divNew = document.createElement("div");
 
     let label = document.createElement("label");
     label.textContent = "определить значение функции в произвольной точке";
@@ -68,17 +77,19 @@ function showCalculateInterpolationPolynomial(div, Lx) {
     input.defaultValue = "5";
 
     let button = document.createElement("button");
-    button.textContent = "determine value of function at an arbitrary point"
+    button.id = "determine";
+    button.textContent = "determine value of function at an arbitrary point";
 
-    button.onclick = () => showDetermineValueOfFunctionAtAnArbitraryPoint(div,
-            determineValueOfFunctionAtAnArbitraryPoint(input, Lx))
+    divNew.append(label, input, button)
+    div.append(divNew)
 
-    div.append(label, input, button)
+    button.onclick = () => showDetermineValueOfFunctionAtAnArbitraryPoint(divNew,
+        determineValueOfFunctionAtAnArbitraryPoint(input, Lx))
 }
 
-function showDetermineValueOfFunctionAtAnArbitraryPoint(div, y) {
+function showDetermineValueOfFunctionAtAnArbitraryPoint(divNew, y) {
     let str = "y = " + y;
-    getTextarea(div, str);
+    getTextarea(divNew, str);
 }
 
 function showSpline(div, elements) {
@@ -104,7 +115,8 @@ function showBestQuadraticApproximation(div, A) {
     for (let i = 1; i < A.length; i++) {
         str += ` + ${A[i]} * x^` + i;
     }
-    getTextarea(div, str);
+
+    getTextarea(div, str)
 }
 
 
